@@ -19,11 +19,19 @@ public class CandidateValidator implements Predicate<Candidate> {
 
         for (String period : periods) {
             String[] years = period.trim().split("-");
-            int start = Integer.parseInt(years[0].trim());
-            int end = Integer.parseInt(years[1].trim());
-            totalYears += (end - start);
-        }
+            if (years.length != 2) {
+                return false;
+            }
 
+            try {
+                int start = Integer.parseInt(years[0].trim());
+                int end = Integer.parseInt(years[1].trim());
+                totalYears += (end - start);
+            } catch (NumberFormatException e) {
+                return false;
+            }
+
+        }
         boolean livedEnough = totalYears >= MIN_YEARS_IN_COUNTRY;
 
         return candidate.getAge() >= MIN_AGE && candidate.isAllowedToVote()
