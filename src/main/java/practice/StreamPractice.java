@@ -12,9 +12,11 @@ import model.Person;
 public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(n -> Arrays.stream(n.split(",")))
-                .mapToInt(Integer::parseInt).filter(n -> n % 2 == 0)
-                .min().orElseThrow(() ->
+                .flatMap(n -> Arrays.stream(n.split("\\s*,\\s*")))
+                .mapToInt(Integer::parseInt)
+                .filter(n -> n % 2 == 0)
+                .min()
+                .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
     }
 
@@ -26,7 +28,8 @@ public class StreamPractice {
             }
             return value;
         }).filter(n -> n % 2 == 1)
-                .average().orElseThrow(NoSuchElementException::new);
+                .average()
+                .orElseThrow(NoSuchElementException::new);
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
@@ -52,7 +55,8 @@ public class StreamPractice {
                 .filter(p -> p.getSex() == Person.Sex.WOMAN
                         && p.getAge() >= femaleAge && p.getCats() != null)
                 .flatMap(p -> p.getCats().stream())
-                .map(Cat::getName).collect(Collectors.toList());
+                .map(Cat::getName)
+                .collect(Collectors.toList());
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
@@ -61,6 +65,7 @@ public class StreamPractice {
         return candidates.stream()
                 .filter(validator)
                 .map(Candidate::getName)
-                .sorted().collect(Collectors.toList());
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
